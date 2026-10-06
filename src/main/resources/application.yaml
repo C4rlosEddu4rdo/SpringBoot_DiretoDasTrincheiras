@@ -1,3 +1,16 @@
 spring:
   application:
     name: primeira_api
+  threads:
+    virtual:
+      enabled: true
+  web:
+    error:
+      include-stacktrace: on_param
+
+server:
+  servlet:
+    context-path: /
+  tomcat:
+    threads:
+      max: 20

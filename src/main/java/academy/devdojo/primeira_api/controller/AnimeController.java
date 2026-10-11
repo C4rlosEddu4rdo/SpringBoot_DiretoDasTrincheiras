@@ -20,6 +20,12 @@ public class AnimeController {
     public Anime findById(@PathVariable Long id){
         return Anime.getAnimes().stream().filter(anime -> anime.getId().equals(id)).findFirst().orElse(null);
     }
+    @PostMapping
+    public Anime save(@RequestBody Anime anime){
+        anime.setId(Anime.getAnimes().getLast().getId() + 1);
+        Anime.getAnimes().add(anime);
+        return anime;
+    }
 
 
 

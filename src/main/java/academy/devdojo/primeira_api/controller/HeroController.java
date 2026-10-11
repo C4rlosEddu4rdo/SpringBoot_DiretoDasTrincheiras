@@ -1,13 +1,11 @@
 package academy.devdojo.primeira_api.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("v1/hero")
 public class HeroController{
     private static final List<String> HEROES = List.of("Homem de Ferro","Homem Aranha","Capitão América");
 
@@ -26,7 +24,7 @@ public class HeroController{
     }
     @GetMapping("{name}")
     public String findByName(@PathVariable(value = "name") String nome){
-        return HEROES.stream().filter(hero -> hero.equalsIgnoreCase(nome)).findFirst().orElse("");
+        return HEROES.stream().filter(hero -> hero.equalsIgnoreCase(nome)).findFirst().orElse(null);
     }
 
 }

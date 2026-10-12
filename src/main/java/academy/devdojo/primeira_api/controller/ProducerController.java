@@ -4,6 +4,11 @@ package academy.devdojo.primeira_api.controller;
 import academy.devdojo.primeira_api.domain.Producer;
 import academy.devdojo.primeira_api.dto.request.ProducerPostRequest;
 import academy.devdojo.primeira_api.dto.response.ProducerResponse;
+import academy.devdojo.primeira_api.mapper.ProducerMapper;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,9 +19,11 @@ import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "v1/producers")
 public class ProducerController {
+    private final ProducerMapper producerMapper;
 
     @GetMapping
     public ResponseEntity<List<Producer>> listAllOrFindyByName(@RequestParam (required = false) String name){
@@ -34,17 +41,10 @@ public class ProducerController {
     }
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, headers = "tutorial-api-key")
     public ResponseEntity<ProducerResponse> save(@RequestBody ProducerPostRequest  producerPostRequest){
-        var producer = Producer.builder()
-                .id(Producer.getProducers().getLast().getId() +1)
-                .name(producerPostRequest.getName())
-                .createdAt(LocalDateTime.now())
-                .build();
-
+        var producer = producerMapper.toProducer(producerPostRequest);
         Producer.getProducers().add(producer);
-        var producerResponse = ProducerResponse.builder()
-                .name(producer.getName())
-                .createdAt(producer.getCreatedAt())
-                .build();
+        var producerResponse = producerMapper.toProducerResponse(producer);
+
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Authorization","My Key");

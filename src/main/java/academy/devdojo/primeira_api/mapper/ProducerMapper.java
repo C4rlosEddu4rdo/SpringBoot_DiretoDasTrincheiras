@@ -1,0 +1,16 @@
+package academy.devdojo.primeira_api.mapper;
+
+import academy.devdojo.primeira_api.domain.Producer;
+import academy.devdojo.primeira_api.dto.request.ProducerPostRequest;
+import academy.devdojo.primeira_api.dto.response.ProducerResponse;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
+
+@Mapper(componentModel = "spring")
+public interface ProducerMapper {
+
+    @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
+    Producer toProducer(ProducerPostRequest postRequest);
+    ProducerResponse  toProducerResponse(Producer producer);
+}

@@ -2,7 +2,10 @@ package academy.devdojo.primeira_api.controller;
 
 
 import academy.devdojo.primeira_api.domain.Producer;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
@@ -24,10 +27,13 @@ public class ProducerController {
         return Producer.getProducers().stream().filter(Producer -> Producer.getId().equals(id)).findFirst().orElse(null);
     }
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, headers = "tutorial-api-key")
-    public Producer save(@RequestBody Producer Producer ){
-        Producer.setId(Producer.getProducers().getLast().getId() + 1);
-        Producer.getProducers().add(Producer);
-        return Producer;
+    public ResponseEntity<Producer> save(@RequestBody Producer producer ){
+        producer.setId(Producer.getProducers().getLast().getId() + 1);
+        Producer.getProducers().add(producer);
+        var headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization","My Key");
+        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(producer);
     }
 
 

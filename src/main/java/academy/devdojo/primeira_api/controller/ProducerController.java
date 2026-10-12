@@ -2,6 +2,8 @@ package academy.devdojo.primeira_api.controller;
 
 
 import academy.devdojo.primeira_api.domain.Producer;
+import academy.devdojo.primeira_api.dto.request.ProducerPostRequest;
+import academy.devdojo.primeira_api.dto.response.ProducerResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -16,24 +19,36 @@ import java.util.List;
 public class ProducerController {
 
     @GetMapping
-    public List<Producer> listAllOrFindyByName(@RequestParam (required = false) String name){
+    public ResponseEntity<List<Producer>> listAllOrFindyByName(@RequestParam (required = false) String name){
         var Producers = Producer.getProducers();
-        if (name == null) return Producers;
-        return Producers.stream().filter(Producer -> Producer.getName().equalsIgnoreCase(name)).toList();
+        if (name == null) return ResponseEntity.ok().body(Producer.getProducers());
+        var producer = Producers.stream().filter(Producer -> Producer.getName().equalsIgnoreCase(name)).toList();
+        return ResponseEntity.ok().body(producer);
     }
 
-    @GetMapping("{id}")
-    public Producer findById(@PathVariable Long id){
-        return Producer.getProducers().stream().filter(Producer -> Producer.getId().equals(id)).findFirst().orElse(null);
+    @GetMapping("/{id}")
+    public ResponseEntity<ProducerResponse> findById(@PathVariable Long id){
+        var producer = Producer.getProducers().stream().filter(Producer -> Producer.getId().equals(id)).findFirst().orElse(null);
+        var producerResponse = ProducerResponse.builder().name(producer.getName()).createdAt(producer.getCreatedAt()).build();
+        return ResponseEntity.ok(producerResponse);
     }
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE, headers = "tutorial-api-key")
-    public ResponseEntity<Producer> save(@RequestBody Producer producer ){
-        producer.setId(Producer.getProducers().getLast().getId() + 1);
+    public ResponseEntity<ProducerResponse> save(@RequestBody ProducerPostRequest  producerPostRequest){
+        var producer = Producer.builder()
+                .id(Producer.getProducers().getLast().getId() +1)
+                .name(producerPostRequest.getName())
+                .createdAt(LocalDateTime.now())
+                .build();
+
         Producer.getProducers().add(producer);
+        var producerResponse = ProducerResponse.builder()
+                .name(producer.getName())
+                .createdAt(producer.getCreatedAt())
+                .build();
         var headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.add("Authorization","My Key");
-        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(producer);
+        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(producerResponse);
     }
 
 

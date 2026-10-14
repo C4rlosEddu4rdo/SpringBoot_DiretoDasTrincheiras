@@ -12,4 +12,5 @@ public interface ProducerMapper {
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     Producer toProducer(ProducerPostRequest postRequest);
     ProducerResponse  toProducerResponse(Producer producer);
+
 }

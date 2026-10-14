@@ -5,7 +5,6 @@ import academy.devdojo.primeira_api.dto.request.ProducerPostRequest;
 import academy.devdojo.primeira_api.dto.response.ProducerResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface ProducerMapper {

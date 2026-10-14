@@ -5,10 +5,7 @@ import academy.devdojo.primeira_api.domain.Producer;
 import academy.devdojo.primeira_api.dto.request.ProducerPostRequest;
 import academy.devdojo.primeira_api.dto.response.ProducerResponse;
 import academy.devdojo.primeira_api.mapper.ProducerMapper;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor

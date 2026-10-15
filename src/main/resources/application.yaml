@@ -14,3 +14,6 @@ server:
   tomcat:
     threads:
       max: 20
+logging:
+  level:
+    academy.devdojo: debug

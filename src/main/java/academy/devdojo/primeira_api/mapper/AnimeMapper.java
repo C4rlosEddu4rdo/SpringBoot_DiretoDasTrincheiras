@@ -9,7 +9,8 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface AnimeMapper {
-    Anime toAnime(AnimePostRequest request);
     AnimeResponse toAnimeResponse(Anime anime);
+    Anime toAnime(AnimePostRequest animePostRequest);
+
     List<AnimeResponse> toAnimeResponseList(List<Anime> animes);
 }

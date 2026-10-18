@@ -2,6 +2,7 @@ package academy.devdojo.primeira_api.controller;
 
 import academy.devdojo.primeira_api.domain.Anime;
 import academy.devdojo.primeira_api.dto.request.AnimePostRequest;
+import academy.devdojo.primeira_api.dto.request.AnimePutRequest;
 import academy.devdojo.primeira_api.dto.response.AnimeResponse;
 import academy.devdojo.primeira_api.mapper.AnimeMapper;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +52,16 @@ public class AnimeController {
         log.debug("deletar anime por ID {}",id);
         Anime animeDelete = Anime.getAnimes().stream().filter(anime -> anime.getId().equals(id)).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID not exists"));
         Anime.getAnimes().remove(animeDelete);
+        return ResponseEntity.noContent().build();
+
+    }
+    @PostMapping
+    public ResponseEntity<Void> updateAnime(@RequestBody AnimePutRequest request){
+        log.debug("atualizando anime {}",request);
+        Anime animeDelete = Anime.getAnimes().stream().filter(anime -> anime.getId().equals(request.getId())).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not found"));
+        Anime.getAnimes().remove(animeDelete);
+        Anime anime = MAPPER.toAnime(request);
+        Anime.getAnimes().add(anime);
         return ResponseEntity.noContent().build();
 
     }

@@ -3,6 +3,7 @@ package academy.devdojo.primeira_api.controller;
 
 import academy.devdojo.primeira_api.domain.Producer;
 import academy.devdojo.primeira_api.dto.request.ProducerPostRequest;
+import academy.devdojo.primeira_api.dto.request.ProducerPutRequest;
 import academy.devdojo.primeira_api.dto.response.ProducerResponse;
 import academy.devdojo.primeira_api.mapper.ProducerMapper;
 import lombok.RequiredArgsConstructor;
@@ -60,6 +61,16 @@ public class ProducerController {
         Producer.getProducers().remove(deleteProducer);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+    @PutMapping
+    public ResponseEntity<Void> update(@RequestBody ProducerPutRequest request){
+        log.debug("atualizando producer {}", request);
+        Producer producerDelete = Producer.getProducers().stream().filter(p -> p.getId().equals(request.getId())).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "producer not found"));
+        Producer.getProducers().remove(producerDelete);
+        Producer producerUpdate = producerMapper.toProducer(request, producerDelete.getCreatedAt());
+        Producer.getProducers().add(producerUpdate);
+        return ResponseEntity.noContent().build();
+    }
+
 
 
 

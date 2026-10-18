@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ProducerResponse {
+    private Long id;
     private String name;
     private LocalDateTime createdAt;
 }

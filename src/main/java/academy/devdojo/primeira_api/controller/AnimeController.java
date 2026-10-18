@@ -9,6 +9,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @Log4j2
@@ -43,6 +45,14 @@ public class AnimeController {
         Anime.getAnimes().add(anime);
         AnimeResponse animeResponse = MAPPER.toAnimeResponse(anime);
         return ResponseEntity.status(HttpStatus.CREATED).body(animeResponse);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void>  deleteAnime(@PathVariable Long id){
+        log.debug("deletar anime por ID {}",id);
+        Anime animeDelete = Anime.getAnimes().stream().filter(anime -> anime.getId().equals(id)).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID not exists"));
+        Anime.getAnimes().remove(animeDelete);
+        return ResponseEntity.noContent().build();
+
     }
 
 }

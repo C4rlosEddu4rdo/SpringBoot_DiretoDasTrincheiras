@@ -28,9 +28,9 @@ public class ProducerController {
     @GetMapping
     public ResponseEntity<List<Producer>> listAllOrFindyByName(@RequestParam (required = false) String name){
         log.debug("solicitação recebida para listar todos os producers, nome do parâmetro {}",name);
-        var Producers = Producer.getProducers();
+        var producers = Producer.getProducers();
         if (name == null) return ResponseEntity.ok().body(Producer.getProducers());
-        var producer = Producers.stream().filter(Producer -> Producer.getName().equalsIgnoreCase(name)).toList();
+        var producer = producers.stream().filter(Producer -> Producer.getName().equalsIgnoreCase(name)).toList();
         return ResponseEntity.ok().body(producer);
     }
 
@@ -70,8 +70,4 @@ public class ProducerController {
         Producer.getProducers().add(producerUpdate);
         return ResponseEntity.noContent().build();
     }
-
-
-
-
 }

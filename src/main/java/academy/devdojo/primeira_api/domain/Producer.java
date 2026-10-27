@@ -14,11 +14,4 @@ public class Producer {
     private String name;
     private LocalDateTime createdAt;
 
-
-    @Getter
-    private static List<Producer> producers = new ArrayList<>();
-    static {
-        producers.addAll(List.of(Producer.builder().id(1L).name("Dexter").createdAt(LocalDateTime.now()).build(),
-                (Producer.builder().id(2L).name("Dark").createdAt(LocalDateTime.now()).build())));
-    }
 }

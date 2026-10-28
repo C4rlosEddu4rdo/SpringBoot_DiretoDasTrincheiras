@@ -16,7 +16,6 @@ public class Anime {
     private Long id;
     private String name;
 
-
     @Getter
     private static List<Anime> animes = new ArrayList<>();
     static {

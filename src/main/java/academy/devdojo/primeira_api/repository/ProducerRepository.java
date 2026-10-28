@@ -1,6 +1,7 @@
 package academy.devdojo.primeira_api.repository;
 
 import academy.devdojo.primeira_api.domain.Producer;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

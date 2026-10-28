@@ -55,7 +55,7 @@ public class AnimeController {
         return ResponseEntity.noContent().build();
 
     }
-    @PostMapping
+    @PutMapping
     public ResponseEntity<Void> updateAnime(@RequestBody AnimePutRequest request){
         log.debug("atualizando anime {}",request);
         Anime animeDelete = Anime.getAnimes().stream().filter(anime -> anime.getId().equals(request.getId())).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not found"));

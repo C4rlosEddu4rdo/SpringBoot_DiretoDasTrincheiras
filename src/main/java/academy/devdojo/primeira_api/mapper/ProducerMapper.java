@@ -8,13 +8,15 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ProducerMapper {
 
     @Mapping(target = "createdAt", expression = "java(java.time.LocalDateTime.now())")
     Producer toProducer(ProducerPostRequest postRequest);
-    Producer toProducer(ProducerPutRequest  putRequest, LocalDateTime createdAt);
+    List<ProducerResponse> toProducerResponseList(List<Producer> producers);
+    Producer toProducer(ProducerPutRequest  putRequest);
     ProducerResponse  toProducerResponse(Producer producer);
 
 }

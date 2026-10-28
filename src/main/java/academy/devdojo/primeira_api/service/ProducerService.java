@@ -2,18 +2,15 @@ package academy.devdojo.primeira_api.service;
 
 import academy.devdojo.primeira_api.domain.Producer;
 import academy.devdojo.primeira_api.repository.ProducerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public class ProducerService {
     private final ProducerRepository repository;
-
-   public ProducerService() {
-       this.repository = new ProducerRepository();
-
-   }
 
     public List<Producer> findAll(String name) {
         return name == null ? repository.listAll() : repository.findByName(name);

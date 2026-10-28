@@ -7,8 +7,11 @@ import academy.devdojo.primeira_api.dto.request.ProducerPutRequest;
 import academy.devdojo.primeira_api.dto.response.ProducerResponse;
 import academy.devdojo.primeira_api.mapper.ProducerMapper;
 import academy.devdojo.primeira_api.service.ProducerService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,11 +24,12 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@AllArgsConstructor
 @RequestMapping(value = "v1/producers")
 @Log4j2
 public class ProducerController {
-    private final ProducerMapper producerMapper;
-    private final ProducerService producerService;
+    private ProducerMapper producerMapper;
+    private ProducerService producerService;
 
     @GetMapping
     public ResponseEntity<List<ProducerResponse>> listAllOrFindyByName(@RequestParam (required = false) String name){

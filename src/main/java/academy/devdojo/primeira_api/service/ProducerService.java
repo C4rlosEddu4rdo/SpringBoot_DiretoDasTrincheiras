@@ -30,7 +30,7 @@ public class ProducerService {
     public void update(Producer producerToUpdate) {
         Producer producer = findByIdOrElseThrow(producerToUpdate.getId());
         producer.setCreatedAt(producer.getCreatedAt());
-        repository.save(producer);
+        repository.update(producer);
     }
 
 }

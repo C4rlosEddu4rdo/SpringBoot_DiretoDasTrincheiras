@@ -24,8 +24,8 @@ public class AnimeService {
         return animeRepository.save(anime);
     }
 
-    public void deleteById(Anime anime) {
-        Anime animeById = findByIdOrElseThrow(anime.getId());
+    public void deleteById(Long id) {
+        Anime animeById = findByIdOrElseThrow(id);
         animeRepository.deleteById(animeById);
     }
     public void update(Anime anime){

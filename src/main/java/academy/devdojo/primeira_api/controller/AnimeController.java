@@ -5,6 +5,8 @@ import academy.devdojo.primeira_api.dto.request.AnimePostRequest;
 import academy.devdojo.primeira_api.dto.request.AnimePutRequest;
 import academy.devdojo.primeira_api.dto.response.AnimeResponse;
 import academy.devdojo.primeira_api.mapper.AnimeMapper;
+import academy.devdojo.primeira_api.repository.AnimeRepository;
+import academy.devdojo.primeira_api.service.AnimeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -20,22 +22,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnimeController {
     private final AnimeMapper MAPPER;
+    private final AnimeService service;
 
     @GetMapping
     public ResponseEntity<List<AnimeResponse>> listAllOrFindByName(@RequestParam(required = false) String name){
         log.debug("solicitação recebida para listar todos os animes, nome do parâmetro {}",name);
-        var animes = Anime.getAnimes();
-        var animeResponseList = MAPPER.toAnimeResponseList(animes);
-        if (name == null) {
-            return ResponseEntity.ok(animeResponseList);
-        }
-        var animeResponse = animeResponseList.stream().filter(anime -> anime.getName().equalsIgnoreCase(name)).toList();
-        return ResponseEntity.ok(animeResponse);
+        var anime = service.findAll(name);
+
+        var animeResponseList = MAPPER.toAnimeResponseList(anime);
+
+        return ResponseEntity.ok(animeResponseList);
     }
     @GetMapping("/{id}")
     public ResponseEntity<AnimeResponse> getAnimeById(@PathVariable Long id){
         log.debug("solicitação recebida para encontrar anime por ID {}",id);
-        var animeResponse = Anime.getAnimes().stream().filter(anime -> anime.getId().equals(id)).findFirst().map(MAPPER::toAnimeResponse).orElse(null);
+        Anime anime = service.findByIdOrElseThrow(id);
+        AnimeResponse animeResponse = MAPPER.toAnimeResponse(anime);
         return ResponseEntity.ok(animeResponse);
     }
 
@@ -43,25 +45,22 @@ public class AnimeController {
     public ResponseEntity<AnimeResponse> addAnime(@RequestBody AnimePostRequest animePostRequest){
         log.debug("solicitação para salvar anime {}", animePostRequest);
         Anime anime = MAPPER.toAnime(animePostRequest);
-        Anime.getAnimes().add(anime);
-        AnimeResponse animeResponse = MAPPER.toAnimeResponse(anime);
+        Anime animeSaved = service.save(anime);
+        AnimeResponse animeResponse = MAPPER.toAnimeResponse(animeSaved);
         return ResponseEntity.status(HttpStatus.CREATED).body(animeResponse);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>  deleteAnime(@PathVariable Long id){
         log.debug("deletar anime por ID {}",id);
-        Anime animeDelete = Anime.getAnimes().stream().filter(anime -> anime.getId().equals(id)).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID not exists"));
-        Anime.getAnimes().remove(animeDelete);
+        service.deleteById(id);
         return ResponseEntity.noContent().build();
 
     }
     @PutMapping
     public ResponseEntity<Void> updateAnime(@RequestBody AnimePutRequest request){
         log.debug("atualizando anime {}",request);
-        Anime animeDelete = Anime.getAnimes().stream().filter(anime -> anime.getId().equals(request.getId())).findFirst().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not found"));
-        Anime.getAnimes().remove(animeDelete);
         Anime anime = MAPPER.toAnime(request);
-        Anime.getAnimes().add(anime);
+        service.update(anime);
         return ResponseEntity.noContent().build();
 
     }

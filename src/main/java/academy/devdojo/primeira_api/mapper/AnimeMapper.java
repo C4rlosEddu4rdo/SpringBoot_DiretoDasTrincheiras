@@ -5,10 +5,11 @@ import academy.devdojo.primeira_api.dto.request.AnimePostRequest;
 import academy.devdojo.primeira_api.dto.request.AnimePutRequest;
 import academy.devdojo.primeira_api.dto.response.AnimeResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AnimeMapper {
     AnimeResponse toAnimeResponse(Anime anime);
     Anime toAnime(AnimePostRequest animePostRequest);

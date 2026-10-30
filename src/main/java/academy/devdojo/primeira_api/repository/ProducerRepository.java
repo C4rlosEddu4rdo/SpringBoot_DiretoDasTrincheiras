@@ -1,7 +1,10 @@
 package academy.devdojo.primeira_api.repository;
 
 import academy.devdojo.primeira_api.domain.Producer;
+import academy.devdojo.primeira_api.external.dependency.Connection;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -10,7 +13,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
+@Log4j2
 public class ProducerRepository {
+    @Qualifier(value ="connection2")
+    private final Connection connection;
 
     private static final List<Producer> PRODUCERS = new ArrayList<>();
     static {
@@ -25,6 +32,7 @@ public class ProducerRepository {
         return PRODUCERS.stream().filter(Producer -> Producer.getId().equals(id)).findFirst();
     }
     public List<Producer> findByName(String name) {
+        log.debug(connection);
         return PRODUCERS.stream().filter(p -> p.getName().equalsIgnoreCase(name)).toList();
     }
 

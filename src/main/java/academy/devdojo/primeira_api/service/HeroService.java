@@ -21,6 +21,7 @@ public class HeroService {
         return heroRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id not found"));
     }
     public Hero save(Hero hero){
+
         return heroRepository.save(hero);
     }
     public void delete (Long id){

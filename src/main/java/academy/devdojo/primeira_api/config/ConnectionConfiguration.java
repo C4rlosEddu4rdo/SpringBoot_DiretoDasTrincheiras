@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Primary;
 public class ConnectionConfiguration {
 
     @Bean(name = "connection2")
+    @Primary
     public Connection connection(){
         return new Connection("LocalHost","Carlos","9821");
     }

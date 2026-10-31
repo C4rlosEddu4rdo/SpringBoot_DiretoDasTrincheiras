@@ -8,6 +8,7 @@ import java.util.List;
 
 @Builder
 @Getter
+@Setter
 public class Producer {
     private Long id;
     private String name;

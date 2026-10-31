@@ -1,8 +1,11 @@
 package academy.devdojo.primeira_api.repository;
 
 import academy.devdojo.primeira_api.domain.Hero;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,8 @@ public class HeroRepository {
         return heroes.stream().filter(h -> h.getId().equals(id)).findFirst();
     }
     public Hero save(Hero hero){
+        var heroId = heroes.stream().mapToLong(Hero::getId).max().orElse(0L) + 1;
+        hero.setId(heroId);
         heroes.add(hero);
         return hero;
     }

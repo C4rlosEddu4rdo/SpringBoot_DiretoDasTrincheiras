@@ -8,22 +8,21 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 @Repository
 public class HeroRepository {
-    private static List<Hero> heroes = new ArrayList<>();
+    private static final List<Hero> heroes = new ArrayList<>();
 
     static {
-        Hero piper = new Hero(1L,"Piper","Deixar bombas ao pular de paraquedas");
         Hero stu = new Hero(2L,"Stu","Avanço com rastro de fogo");
-        heroes.addAll(List.of(piper,stu));
+        heroes.addAll(List.of(new Hero(1L,"Piper","Deixar bombas ao pular de paraquedas"),stu));
     }
 
     public List<Hero> ListAll() {
-        return heroes;
+        return heroes.stream().sorted(Comparator.comparing(Hero::getId)).toList();
     }
     public List<Hero> findByName(String name){
         return heroes.stream().filter(h -> h.getName().equals(name)).toList();
@@ -41,7 +40,7 @@ public class HeroRepository {
         heroes.remove(hero);
     }
     public void update(Hero hero){
-        delete(hero);
+        heroes.stream().filter(h -> h.getId().equals(hero.getId())).findFirst().ifPresent(heroes::remove);
         heroes.add(hero);
     }
 

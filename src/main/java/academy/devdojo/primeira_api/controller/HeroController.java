@@ -53,7 +53,7 @@ public class HeroController{
     }
     @PutMapping
     public ResponseEntity<Void> update(@RequestBody HeroPutRequest heroPutRequest){
-        log.debug("Atualizando Hero por id {}", heroPutRequest);
+        log.debug("Atualizando Hero {}", heroPutRequest);
         Hero hero = mapper.toHero(heroPutRequest);
         service.update(hero);
         return ResponseEntity.noContent().build();

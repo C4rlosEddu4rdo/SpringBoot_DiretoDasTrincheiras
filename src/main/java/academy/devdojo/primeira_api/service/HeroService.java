@@ -29,8 +29,8 @@ public class HeroService {
         heroRepository.delete(heroById);
     }
     public void update (Hero hero){
-        Hero heroUpdate = findByIdOrElseThrow(hero.getId());
-        heroRepository.update(heroUpdate);
+        findByIdOrElseThrow(hero.getId());
+        heroRepository.update(hero);
     }
 
 

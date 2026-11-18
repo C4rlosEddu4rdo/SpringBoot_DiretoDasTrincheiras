@@ -15,7 +15,7 @@ public class HeroService {
     private final HeroRepository heroRepository;
 
     public List<Hero> listAllOrFindByName (String name){
-        return name == null ? heroRepository.ListAll() : heroRepository.findByName(name);
+        return name == null ? heroRepository.listAll() : heroRepository.findByName(name);
     }
     public Hero findByIdOrElseThrow(Long id){
         return heroRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id not found"));
